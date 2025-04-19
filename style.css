@@ -1,19 +1,59 @@
 body {
   color: aquamarine;
+  height: 100vh;            /* Full viewport height */
+  overflow-y: auto;         /* Allow vertical scroll only if absolutely needed */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-image: url("img/background.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+h1{
+  margin: 0.5vh;
+  padding: 0;
+}
+
+h2 {
+  margin: 1vh 0;
+  padding: 0;
+}
+
+h3, h4 {
+  margin: 0.5vh;
+  padding: 0;
+}
+
+#ai_deck, #player_deck {
+  margin-top: 0vh;
+}
+
+.choose {
+  margin: 1vh;
+}
+
 img {
-  max-width: 12vw;
+  width: clamp(60px, 6vw, 100px);
+  height: clamp(90px, 9vw, 140px);
 }
 
 .card {
   display: flex;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.5rem;
   margin: 1rem;
   border-radius: 10px;
   background-color: #f0f0f0;
@@ -39,21 +79,117 @@ img {
 #ai_deck {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+}
+
+#table_player,
+#table_ai,
+.game_status {
+  flex: 1; 
+  padding: 0 2rem;
+}
+
+.game_status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #table {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 
-  height: 40vh;
+  min-height: 20vh;
+  max-height: 30vh;
   border: 3px solid #000000;
   border-radius: 1rem;
-  margin: 1rem;
+  margin: 1rem auto;
   padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #table span {
   font-size: 1.5rem;
   color: #efe3e3;
 }
+
+#get_start {
+  background-color: black;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 10px 50px;         /* Space inside the button */
+  font-size: 16px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+
+
+#get_start:hover {
+  background-color: green;  /* Darker blue on hover */
+}
+#player_choice {
+  background-color: #f0f0f0;   /* Light gray background */
+  color: #333;                 /* Dark text */
+  padding: 4px 12px;
+  font-size: 12px;
+  border: 2px solid #007bff;   /* Blue border */
+  border-radius: 8px;
+  appearance: none;            /* Removes default OS styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+
+#player_choice:hover {
+  border-color: #0056b3;       /* Darker blue on hover */
+}
+#play {
+  background-color: black;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 5px 15px;         /* Space inside the button */
+  font-size: 12px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+#reset {
+  margin-top: 0.5vh;
+  background-color: red;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 5px 15px;         /* Space inside the button */
+  font-size: 12px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+#reset:hover {
+  background-color: green;
+}
+#shuffle {
+  background-color: black;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 5px 15px;         /* Space inside the button */
+  font-size: 12px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+ 
+
