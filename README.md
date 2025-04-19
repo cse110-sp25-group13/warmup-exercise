@@ -1,1 +1,2 @@
-# warmup-exercise
+# High or Low Guessing Game
+High or Low is a very simple guessing game in which the user is shown a card face down along with a value displayed underneath the card. The user has to guess if the value of the card is either higher or lower than the value that is displayed below the card. If the user guesses correctly, then it displays that the user is correct. If the user guesses wrong, then it displays that the user guessed wrong. After a guess, you must hit the `Play Again` button to play again.
