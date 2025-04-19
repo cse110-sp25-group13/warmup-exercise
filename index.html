@@ -1,208 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>High or Low Card Game</title>
-  <style>
-    /* General page layout and design */
-    body {
-      font-family: sans-serif;
-      background: #2e2e2e;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Warmup</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-    /* Card container spacing */
-    card-deck {
-      margin: 1rem;
-    }
+  <body>
+    <header>
+      <h1>Weclome to the guess and pick</h1>
+      <h2 id = "info">Start the game by getting cards:</h2>
+        <button id = "get_start" onclick ="init()">Get Cards</button>
+    </header>
+    <section class = "game_deck">
+        <h3>AI</h3>
+        <section id = "ai_deck">
+        </section>
+    <sectio class = "game_table">
+        <h3>Game Table</h3>
+        <section id = "table">
+            <span id = "table_player">
+                <h4>Player's Card</h4> 
+                <div id = "player_card"></div>
+            </span>
+            <section class="game_status">
 
-    /* Button styling */
-    .controls button {
-      padding: 0.5rem 1rem;
-      margin: 0.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    /* Feedback display */
-    .current-value, .result {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      height: 1.5rem;
-    }
-  </style>
-</head>
-<body>
-  <h1>High or Low</h1>
-  <!-- Custom card deck element -->
-  <card-deck></card-deck>
-  <!-- Display current card value for comparison -->
-  <div class="current-value" id="currentValue"></div>
-  <!-- User input controls -->
-  <div class="controls">
-    <button id="higher">Higher</button>
-    <button id="lower">Lower</button>
-    <button id="reset">Play Again</button>
-  </div>
-  <!-- Show result of last guess -->
-  <div class="result" id="result"></div>
-
-  <script>
-    // Define custom playing-card component
-    class PlayingCard extends HTMLElement {
-      constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.flipped = false;
-        this.cardData = { rank: '?', suit: '?' };
-        this.render();
-      }
-
-      // Set card data and trigger flip animation
-      set card(value) {
-        this.cardData = value;
-        this.flipped = false;
-        this.render();
-        setTimeout(() => this.flip(), 100);
-      }
-
-      // Flip the card to reveal the front side
-      flip() {
-        this.flipped = true;
-        this.render();
-      }
-
-      // Render card styles and content
-      render() {
-        this.shadowRoot.innerHTML = `
-          <style>
-            .card {
-              width: 100px;
-              height: 150px;
-              perspective: 1000px;
-            }
-            .inner {
-              width: 100%;
-              height: 100%;
-              position: relative;
-              transform-style: preserve-3d;
-              transition: transform 0.6s;
-              transform: ${this.flipped ? 'rotateY(180deg)' : 'rotateY(0deg)'};
-            }
-            .front, .back {
-              position: absolute;
-              width: 100%;
-              height: 100%;
-              backface-visibility: hidden;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 2rem;
-              border: 1px solid #000;
-              border-radius: 10px;
-            }
-            .front {
-              background: white;
-              color: black;
-              transform: rotateY(180deg);
-            }
-            .back {
-              background: #444;
-              color: white;
-            }
-          </style>
-          <div class="card">
-            <div class="inner">
-              <div class="front">${this.cardData.rank}${this.cardData.suit}</div>
-              <div class="back"></div>
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    customElements.define('playing-card', PlayingCard);
-
-    // Define custom card-deck component
-    class CardDeck extends HTMLElement {
-      constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.deck = this.generateDeck();
-        this.shuffleDeck();
-        this.currentIndex = 0;
-        this.score = 0;
-        this.shadowRoot.innerHTML = '<playing-card></playing-card>';
-        this.updateCard();
-      }
-
-      // Create full standard deck
-      generateDeck() {
-        const suits = ['♠', '♥', '♦', '♣'];
-        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        return ranks.flatMap(rank => suits.map(suit => ({ rank, suit, value: ranks.indexOf(rank) + 2 })));
-      }
-
-      // Shuffle deck using Fisher-Yates algorithm
-      shuffleDeck() {
-        for (let i = this.deck.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
-        }
-      }
-
-      // Show the current card as text and flip a blank card
-      updateCard() {
-        const card = this.deck[this.currentIndex];
-        const displayText = `${card.rank}${card.suit}`;
-        document.getElementById('currentValue').textContent = `Current card: ${displayText}`;
-        this.shadowRoot.querySelector('playing-card').card = { rank: '?', suit: '?' };
-        localStorage.setItem('highlow_currentCard', JSON.stringify(card));
-      }
-
-      // Compare guess to next card and flip it
-      guess(higher) {
-        if (this.currentIndex >= this.deck.length - 1) return;
-        const current = this.deck[this.currentIndex];
-        const next = this.deck[this.currentIndex + 1];
-        const correct = higher ? next.value > current.value : next.value < current.value;
-        if (correct) this.score++;
-        this.currentIndex++;
-        this.shadowRoot.querySelector('playing-card').card = next;
-        document.getElementById('result').textContent = correct ? 'Correct!' : 'Wrong!';
-        localStorage.setItem('highlow_score', this.score);
-      }
-
-      // Restart game with new deck and clear UI
-      reset() {
-        this.deck = this.generateDeck();
-        this.shuffleDeck();
-        this.currentIndex = 0;
-        this.score = 0;
-        document.getElementById('result').textContent = '';
-        document.getElementById('currentValue').textContent = '';
-        this.updateCard();
-        localStorage.clear();
-      }
-    }
-
-    customElements.define('card-deck', CardDeck);
-
-    // Button event listeners for user actions
-    document.getElementById('higher').onclick = () => {
-      document.querySelector('card-deck').guess(true);
-    };
-    document.getElementById('lower').onclick = () => {
-      document.querySelector('card-deck').guess(false);
-    };
-    document.getElementById('reset').onclick = () => {
-      document.querySelector('card-deck').reset();
-    };
-  </script>
-</body>
+                <div id="status_message">Status Message</div>
+                <section class = "score_board">
+                    <div class="score" id="ai_score">AI Score: 0</div>
+                    <div class="score" id="player_score">Player Score: 0</div>
+                </section>
+            </section>
+            <span id = "table_ai">
+                <h4>Ai's Card</h4>
+                <div id = "ai_card"></div> 
+            </span>
+        </section>
+    </section>
+    <section>
+        <h3>Player</h3>
+        <section id = "player_deck">
+        </section>
+    </section>
+    <button id = "shuffle" onclick = "get_player_card()">Shuffle</button>   
+    <section class = "choose">
+        <h3>Choose a Card</h3>
+        <select id = "player_choice">
+            <option value="1" id = "pc_1">Card 1</option>
+            <option value="2" id = "pc_2">Card 2</option>
+            <option value="3" id = "pc_3">Card 3</option>
+            <option value="4" id = "pc_4">Card 4</option>
+        </select>
+        <button id= "play" onclick = "get_result()">Play</button>
+    </section>
+    
+    <button id = "reset" onclick = "reset_game()">Reset</button>
+  </body>
+  <script src = "script.js"></script>
 </html>
