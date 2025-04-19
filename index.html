@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playing Card Flip</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="card-deck">
+        <div class="playing-card">
+            <div class="card-face front">
+              <span class="rank">A</span> <span class="suit">♠️</span>
+            </div>
+            <div class="card-face back"></div>
+          </div>
+          <div class="playing-card" style="position: absolute; left: 5px; top: 5px; z-index: -1;" >
+            <div class="card-face front">
+              <span class="rank">K</span> <span class="suit">♠️</span>
+            </div>
+            <div class="card-face back"></div>
+          </div>
+          <div class="playing-card" style="position: absolute; left: 5px; top: 5px; z-index: -2;" >
+            <div class="card-face front">
+              <span class="rank">Q</span> <span class="suit">♠️</span>
+            </div>
+            <div class="card-face back"></div>
+          </div>
+      
+    </div>
+
+    <script>
+      // Wait for the HTML DOM to be fully loaded and parsed
+      document.addEventListener("DOMContentLoaded", function () {
+        // Find the card element using its class name
+        const cardElement = document.querySelector(".playing-card");
+
+        // Check if the element was successfully found
+        if (cardElement) {
+          // Add an event listener that triggers when the card is clicked
+          cardElement.addEventListener("click", function () {
+            // Toggle the 'is-flipped' class on the card element
+            // This class name MUST match the one used in the CSS
+            cardElement.classList.toggle("is-flipped");
+            console.log("Card clicked! Toggled .is-flipped class.");
+          });
+        } else {
+          // Log an error if the card element couldn't be found
+          console.error("Could not find element with class .playing-card");
+        }
+      });
+
+    </script>
+  </body>
+</html>

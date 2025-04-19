@@ -1,0 +1,78 @@
+/* Styles for the main card container */
+.card-deck {
+    position: relative;
+    width: 120px;
+    height: 170px;
+}
+
+.playing-card {
+    /* Dimensions */
+    height: 150px;
+    width: 100px;
+    /* Appearance */
+    border: 1px solid black;
+    border-radius: 8px;
+    /* Positioning context for absolute children */
+    position: relative;
+    /* Enable 3D transformations for children */
+    transform-style: preserve-3d;
+    /* Define the transition effect for the transform property */
+    transition: transform 0.6s; /* Adjust timing as needed */
+    /* Add cursor pointer to indicate it's clickable */
+    cursor: pointer;
+  }
+  
+  /* Rule applied when the card is flipped (JS adds/removes this class) */
+  .playing-card.is-flipped {
+    /* Rotate the card container 180 degrees around the Y axis */
+    transform: rotateY(180deg);
+  }
+  
+  /* Common styles for both front and back faces */
+  .card-face {
+    /* Position absolutely within the .playing-card container */
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* Make faces cover the entire container */
+    width: 100%;
+    height: 100%;
+    /* Hide the back side of the element when it's facing away */
+    backface-visibility: hidden;
+    /* Ensure border-radius applies to faces too */
+    border-radius: 8px; /* Match container's border-radius */
+    /* Optional: Center content if needed */
+    display: flex; /* Example: using flex for centering */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Stack rank and suit vertically */
+    font-size: 24px; /* Example font size */
+  }
+  
+  /* Styles specific to the front face */
+  .card-face.front {
+    background-color: white; /* Standard card color */
+    color: black; /* Standard text color */
+    /* Initially rotate the front face so it starts facing away */
+    transform: rotateY(180deg);
+  }
+  
+  /* Styles specific to the back face */
+  .card-face.back {
+    /* Use your favorite color! Or a background image */
+    background-color: purple;
+    /* Example: Add a simple pattern or image */
+    /* background-image: url('path/to/card-back.png'); */
+    /* background-size: cover; */
+  }
+  
+  /* Basic styling for rank and suit (can be improved) */
+  .rank {
+    /* Add specific styles if needed */
+  }
+  
+  .suit {
+    /* Add specific styles if needed */
+    font-size: 30px; /* Make suit slightly larger */
+  }
+  
