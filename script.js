@@ -88,7 +88,7 @@ function get_ai_card() {
   //   remove old cards
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
-    card.src = "img/card_back.jpg";
+    card.src = CARDBACK_PATH;
     card.className = "card";
     ai_deck.appendChild(card);
   }
@@ -103,15 +103,7 @@ function get_player_card() {
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
     let card_value = Math.floor(Math.random() * 3 + 1);
-    if (card_value == 1) {
-      card.src = "img/rock.webp";
-    }
-    if (card_value == 2) {
-      card.src = "img/paper.jpeg";
-    }
-    if (card_value == 3) {
-      card.src = "img/scissors.png";
-    }
+    card.src = CARDFRONT_PATHS[card_value - 1]
     card.value = card_value;
     card.id = "player_card_" + i;
     card.className = "card player-card";
@@ -142,7 +134,7 @@ async function get_result() {
   player_card.className = "card";
 
   let ai_card = document.createElement("play-card");
-  ai_card.src = "img/card_back.jpg";
+  ai_card.src = CARDBACK_PATH
   ai_card.className = "card";
   ai_card_on_deck.appendChild(ai_card);
 
