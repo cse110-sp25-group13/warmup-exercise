@@ -15,10 +15,10 @@ const ai_card_on_deck = document.getElementById("ai_card");
 const CARDBACK_PATH = './img/card_back.jpg';
 const PLACEHOLDER_PATH = './img/placeholder_card.png';
 
-let CARDFRONT_PATHS = [
-  `img/classic/rock.jpg`,
-  `img/classic/paper.jpg`,
-  `img/classic/scissors.jpg`
+const CARDFRONT_PATHS = [
+    "./img/rock.webp",
+    "./img/paper.jpeg",
+    "./img/scissors.png",
 ];
 
 let rock,
@@ -27,10 +27,9 @@ let rock,
 
 let ai_score = 0;
 let player_score = 0;
-let current_theme = "classic";
 
 shuffle_button.style.display = "none";
-table.style.backgroundImage = "url('img/classic/table.jpg')";
+table.style.backgroundImage = "url('img/table.jpg')";
 
 class Card extends HTMLElement {
   static get observedAttributes() {
@@ -75,14 +74,6 @@ class Card extends HTMLElement {
 customElements.define("play-card", Card);
 
 function init() {
-  reset_game();
-  current_theme = document.getElementById("theme-select").value;
-  CARDFRONT_PATHS = [
-    `img/${current_theme}/rock.jpg`,
-    `img/${current_theme}/paper.jpg`,
-    `img/${current_theme}/scissors.jpg`,
-  ];
-  table.style.backgroundImage = `url('img/${current_theme}/table.jpg')`;
   info_word.style.display = "none";
   get_start_button.style.display = "none";
   shuffle_button.style.display = "block";
