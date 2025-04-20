@@ -12,6 +12,12 @@
       <h1>Weclome to the guess and pick</h1>
       <h2 id = "info">Start the game by getting cards:</h2>
         <button id = "get_start" onclick ="init()">Get Cards</button>
+        <label for="theme-select">Choose a Theme:</label>
+        <select id="theme-select" onchange="init()">
+            <option value="classic">Classic</option>
+            <option value="exploding-kittens">Exploding Kittens</option>
+            <option value="avatar">Avatar the Last Airbender</option>
+        </select>
     </header>
     <section class = "game_deck">
         <h3>AI</h3>
