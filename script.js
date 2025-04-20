@@ -12,6 +12,13 @@ const info_word = document.getElementById("info");
 const shuffle_button = document.getElementById("shuffle");
 const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
+const CARDBACK_PATH = './img/card_back.jpg';
+
+const CARDFRONT_PATHS = [
+    "./img/rock.webp",
+    "./img/paper.jpeg",
+    "./img/scissors.png",
+];
 
 let rock,
   paper,
@@ -208,4 +215,39 @@ function gameover() {
   } else {
     alert("It's a tie!");
   }
+}
+// Helper to create a card element (Rock/Paper/Scissors)
+function createCard(type, owner) {
+    const card = document.createElement('img');
+    card.classList.add('card');
+    card.className = "card"
+
+    const src = CARDFRONT_PATHS[type];
+    if(owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
+    else card.src = src
+    card.alt = src;
+    card.value = type+1;
+    // You can add event listeners or metadata if needed
+    return card;
+}
+
+function pullCard() {
+
+    const maxHandSize = 4;
+    if (player_deck.children.length >= maxHandSize) {
+        player_deck.removeChild(player_deck.firstElementChild);
+    }
+    if (ai_deck.children.length >= maxHandSize) {
+        ai_deck.removeChild(ai_deck.firstElementChild);
+    }
+    const playerCardType = Math.floor(Math.random() * 3);
+    const aiCardType = Math.floor(Math.random() * 3);
+
+    const playerCard = createCard(playerCardType, 'player');
+    const aiCard = createCard(aiCardType, 'ai');
+
+    playerCard.id = "player_card_"+ player_deck.children.length;
+    player_deck.appendChild(playerCard);
+    ai_deck.appendChild(aiCard);
+    
 }
