@@ -191,6 +191,13 @@ function createCard(type, owner) {
 
 function pullCard() {
 
+    const maxHandSize = 4;
+    if (player_deck.children.length >= maxHandSize) {
+        player_deck.removeChild(player_deck.firstElementChild);
+    }
+    if (ai_deck.children.length >= maxHandSize) {
+        ai_deck.removeChild(ai_deck.firstElementChild);
+    }
     const playerCardType = Math.floor(Math.random() * 3);
     const aiCardType = Math.floor(Math.random() * 3);
 
@@ -200,13 +207,5 @@ function pullCard() {
     playerCard.id = "player_card_"+ player_deck.children.length;
     player_deck.appendChild(playerCard);
     ai_deck.appendChild(aiCard);
-
-    // Optional: limit hand size (e.g., max 4)
-    const maxHandSize = 3;
-    if (player_deck.children.length > maxHandSize) {
-        player_deck.removeChild(player_deck.firstChild);
-    }
-    if (ai_deck.children.length > maxHandSize) {
-        ai_deck.removeChild(ai_deck.firstChild);
-    }
+    
 }
