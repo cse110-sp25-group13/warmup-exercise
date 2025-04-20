@@ -184,7 +184,13 @@ async function get_result(selected_card) {
   player_card_on_deck.innerHTML = ""; // Clear previous player card
 
   let player_card = document.createElement("play-card");
-  player_card.src = CARDFRONT_PATHS[player_card_value - 1];
+  if (player_card_value == 1) {
+    player_card.src = `img/${current_theme}/rock.jpg`;
+  } else if (player_card_value == 2) {
+    player_card.src = `img/${current_theme}/paper.jpg`;
+  } else if (player_card_value == 3) {
+    player_card.src = `img/${current_theme}/scissors.jpg`;
+  }
   player_card_on_deck.appendChild(player_card);
   player_card.className = "card";
 
@@ -197,33 +203,14 @@ async function get_result(selected_card) {
   await delay(100);          // show back first
   ai_card.classList.add("flip");
   await delay(300);          // halfway through the flip
-  ai_card.src = CARDFRONT_PATHS[ai_card_value - 1];
-  await delay(300); 
-  setTimeout(() => {
-    ai_card.classList.add("flip");
-
-    // Change the image midway through the flip
-    setTimeout(() => {
-      if (ai_card_value == 1) {
-        ai_card.src = `img/${current_theme}/rock.jpg`;
-      } else if (ai_card_value == 2) {
-        ai_card.src = `img/${current_theme}/paper.jpg`;
-      } else if (ai_card_value == 3) {
-        ai_card.src = `img/${current_theme}/scissors.jpg`;
-      }
-    }, 300); // Halfway point of the flip animation
-  }, 100); // Initial delay to show the back
-
-  let player_card = document.createElement("play-card");
-  if (player_card_value == 1) {
-    player_card.src = `img/${current_theme}/rock.jpg`;
-  } else if (player_card_value == 2) {
-    player_card.src = `img/${current_theme}/paper.jpg`;
-  } else if (player_card_value == 3) {
-    player_card.src = `img/${current_theme}/scissors.jpg`;
+  if (ai_card_value == 1) {
+    ai_card.src = `img/${current_theme}/rock.jpg`;
+  } else if (ai_card_value == 2) {
+    ai_card.src = `img/${current_theme}/paper.jpg`;
+  } else if (ai_card_value == 3) {
+    ai_card.src = `img/${current_theme}/scissors.jpg`;
   }
-  player_card_on_deck.appendChild(player_card);
-  player_card.className = "card";
+  await delay(300); 
 
   if (ai_card_value == player_card_value) {
     message.textContent = "It's a tie!";
