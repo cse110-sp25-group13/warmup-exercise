@@ -15,9 +15,9 @@ const ai_card_on_deck = document.getElementById("ai_card");
 const CARDBACK_PATH = './img/card_back.jpg';
 
 const CARDFRONT_PATHS = [
-    "./img/rock.webp",
-    "./img/paper.jpeg",
-    "./img/scissors.png",
+  "./img/rock.webp",
+  "./img/paper.jpeg",
+  "./img/scissors.png",
 ];
 
 let rock,
@@ -119,6 +119,7 @@ function get_player_card() {
   }
 }
 function get_result() {
+  document.getElementById("pull_sound").play();
   if (player_deck.querySelectorAll("play-card").length == 0) {
     gameover();
     return;
@@ -188,6 +189,7 @@ function get_result() {
 }
 
 function reset_game() {
+  document.getElementById("pull_sound").play();
   ai_card_on_deck.innerHTML = ""; // Clear previous AI card
   player_card_on_deck.innerHTML = ""; // Clear previous player card
   message.textContent = "Choose a card!";
@@ -218,36 +220,36 @@ function gameover() {
 }
 // Helper to create a card element (Rock/Paper/Scissors)
 function createCard(type, owner) {
-    const card = document.createElement('img');
-    card.classList.add('card');
-    card.className = "card"
+  const card = document.createElement('img');
+  card.classList.add('card');
+  card.className = "card"
 
-    const src = CARDFRONT_PATHS[type];
-    if(owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
-    else card.src = src
-    card.alt = src;
-    card.value = type+1;
-    // You can add event listeners or metadata if needed
-    return card;
+  const src = CARDFRONT_PATHS[type];
+  if (owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
+  else card.src = src
+  card.alt = src;
+  card.value = type + 1;
+  // You can add event listeners or metadata if needed
+  return card;
 }
 
 function pullCard() {
+  document.getElementById("pull_sound").play();
+  const maxHandSize = 4;
+  if (player_deck.children.length >= maxHandSize) {
+    player_deck.removeChild(player_deck.firstElementChild);
+  }
+  if (ai_deck.children.length >= maxHandSize) {
+    ai_deck.removeChild(ai_deck.firstElementChild);
+  }
+  const playerCardType = Math.floor(Math.random() * 3);
+  const aiCardType = Math.floor(Math.random() * 3);
 
-    const maxHandSize = 4;
-    if (player_deck.children.length >= maxHandSize) {
-        player_deck.removeChild(player_deck.firstElementChild);
-    }
-    if (ai_deck.children.length >= maxHandSize) {
-        ai_deck.removeChild(ai_deck.firstElementChild);
-    }
-    const playerCardType = Math.floor(Math.random() * 3);
-    const aiCardType = Math.floor(Math.random() * 3);
+  const playerCard = createCard(playerCardType, 'player');
+  const aiCard = createCard(aiCardType, 'ai');
 
-    const playerCard = createCard(playerCardType, 'player');
-    const aiCard = createCard(aiCardType, 'ai');
+  playerCard.id = "player_card_" + player_deck.children.length;
+  player_deck.appendChild(playerCard);
+  ai_deck.appendChild(aiCard);
 
-    playerCard.id = "player_card_"+ player_deck.children.length;
-    player_deck.appendChild(playerCard);
-    ai_deck.appendChild(aiCard);
-    
 }
