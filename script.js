@@ -21,16 +21,58 @@ let rock,
 
 let ai_score = 0;
 let player_score = 0;
-let current_theme = "exploding_kitten";
+let current_theme = "classic";
 
 shuffle_button.style.display = "none";
-table.style.backgroundImage = `url("img/classic/table.jpg")`;
+info_theme.style.display = "none";
+table.style.backgroundImage = "url('img/classic/table.jpg')";
+
+class Card extends HTMLElement {
+  static get observedAttributes() {
+    return ["src", "class"];
+  }
+  constructor() {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+    this.img = document.createElement("img");
+    this.shadow.appendChild(this.img);
+    this.img.style.width = "12vw";
+  }
+
+  connectedCallback() {
+    this.img.src = this.getAttribute("src") || "";
+    this.img.className = this.getAttribute("class") || "";
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "src") {
+      this.img.src = newValue;
+    } else if (name === "class") {
+      this.img.className = newValue;
+    }
+  }
+  get src() {
+    return this.getAttribute("src");
+  }
+
+  set src(value) {
+    this.setAttribute("src", value);
+  }
+
+  get className() {
+    return this.getAttribute("class");
+  }
+
+  set className(value) {
+    this.setAttribute("class", value);
+  }
+}
+customElements.define("play-card", Card);
 
 function init() {
   info_word.style.display = "none";
   get_start_button.style.display = "none";
   info_theme.style.display = "none";
-  theme_toggle.style.display = "none";
   shuffle_button.style.display = "block";
   current_theme = document.getElementById("theme_select").value;
   table.style.backgroundImage = `url(${getImgPath("table.jpg")})`;
@@ -43,13 +85,13 @@ function getImgPath(filename) {
 }
 
 function get_ai_card() {
-  const old_card = ai_deck.querySelectorAll("img");
+  const old_card = ai_deck.querySelectorAll("play-card");
   old_card.forEach((card) => {
     card.remove();
   });
   //   remove old cards
   for (let i = 0; i < 4; i++) {
-    const card = document.createElement("img");
+    const card = document.createElement("play-card");
     card.src = getImgPath("card_back.jpg");
     card.className = "card";
     ai_deck.appendChild(card);
@@ -57,13 +99,13 @@ function get_ai_card() {
 }
 
 function get_player_card() {
-  const old_card = player_deck.querySelectorAll("img");
+  const old_card = player_deck.querySelectorAll("play-card");
   old_card.forEach((card) => {
     card.remove();
   });
   //   remove old cards
   for (let i = 0; i < 4; i++) {
-    const card = document.createElement("img");
+    const card = document.createElement("play-card");
     let card_value = Math.floor(Math.random() * 3 + 1);
     if (card_value == 1) {
       card.src = getImgPath("rock.jpg");
@@ -81,7 +123,7 @@ function get_player_card() {
   }
 }
 function get_result() {
-  if (player_deck.querySelectorAll("img").length == 0) {
+  if (player_deck.querySelectorAll("play-card").length == 0) {
     gameover();
     return;
   }
@@ -89,7 +131,7 @@ function get_result() {
   const ai_card_value = Math.floor(Math.random() * 3 + 1);
 
   let selected_card =
-    player_deck.querySelectorAll("img")[player_selected.value - 1];
+    player_deck.querySelectorAll("play-card")[player_selected.value - 1];
   let player_card_value = selected_card.value;
   selected_card.remove(); // Remove the selected card from the deck
   ai_deck.removeChild(ai_deck.lastChild); // Remove the last card from the AI deck
@@ -97,7 +139,7 @@ function get_result() {
   ai_card_on_deck.innerHTML = ""; // Clear previous AI card
   player_card_on_deck.innerHTML = ""; // Clear previous player card
 
-  let ai_card = document.createElement("img");
+  let ai_card = document.createElement("play-card");
   ai_card.src = getImgPath("card_back.jpg");
   ai_card.className = "card";
   ai_card_on_deck.appendChild(ai_card);
@@ -118,7 +160,7 @@ function get_result() {
     }, 300); // Halfway point of the flip animation
   }, 100); // Initial delay to show the back
 
-  let player_card = document.createElement("img");
+  let player_card = document.createElement("play-card");
   if (player_card_value == 1) {
     player_card.src = getImgPath("rock.jpg");
   } else if (player_card_value == 2) {
@@ -155,11 +197,11 @@ function reset_game() {
   message.textContent = "Choose a card!";
   shuffle_button.style.display = "none";
   get_start_button.style.display = "block";
-  let old_card = ai_deck.querySelectorAll("img");
+  let old_card = ai_deck.querySelectorAll("play-card");
   old_card.forEach((card) => {
     card.remove();
   });
-  let old_card2 = player_deck.querySelectorAll("img");
+  let old_card2 = player_deck.querySelectorAll("play-card");
   old_card2.forEach((card) => {
     card.remove();
   });

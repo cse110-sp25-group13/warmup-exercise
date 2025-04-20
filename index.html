@@ -14,9 +14,10 @@
         <button id = "get_start" onclick ="init()">Get Cards</button>
       <h2 id="theme">Pick your theme!</h2>
       <label for="theme_select">Choose Theme:</label>
-        <select id="theme_select" onchange="changeTheme()">
+        <select id="theme_select" onchange="init()">
             <option value="classic" selected>Classic</option>
             <option value="exploding_kitten">Exploding Kittens</option>
+            <option value="avatar">Avatar the Last Airbender</option>
         </select>
     </header>
     <section class = "game_deck">
