@@ -14,10 +14,10 @@ const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
 const CARDBACK_PATH = './img/card_back.jpg';
 
-let CARDFRONT_PATHS = [
-  `img/classic/rock.jpg`,
-  `img/classic/paper.jpg`,
-  `img/classic/scissors.jpg`
+const CARDFRONT_PATHS = [
+    "./img/rock.webp",
+    "./img/paper.jpeg",
+    "./img/scissors.png",
 ];
 
 let rock,
@@ -26,10 +26,9 @@ let rock,
 
 let ai_score = 0;
 let player_score = 0;
-let current_theme = "classic";
 
 shuffle_button.style.display = "none";
-table.style.backgroundImage = "url('img/classic/table.jpg')";
+table.style.backgroundImage = "url('img/table.jpg')";
 
 class Card extends HTMLElement {
   static get observedAttributes() {
@@ -74,25 +73,11 @@ class Card extends HTMLElement {
 customElements.define("play-card", Card);
 
 function init() {
-  reset_game();
-  current_theme = document.getElementById("theme-select").value;
-  CARDFRONT_PATHS = [
-    `img/${current_theme}/rock.jpg`,
-    `img/${current_theme}/paper.jpg`,
-    `img/${current_theme}/scissors.jpg`,
-  ];
-  table.style.backgroundImage = `url('img/${current_theme}/table.jpg')`;
   info_word.style.display = "none";
   get_start_button.style.display = "none";
   shuffle_button.style.display = "block";
-  current_theme = document.getElementById("theme-select").value;
-  table.style.backgroundImage = `url(${getImgPath("table.jpg")})`;
   get_ai_card();
   get_player_card();
-}
-
-function getImgPath(filename) {
-  return `img/${current_theme}/${filename}`
 }
 
 function get_ai_card() {
@@ -103,7 +88,7 @@ function get_ai_card() {
   //   remove old cards
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
-    card.src = CARDBACK_PATH;
+    card.src = "img/card_back.jpg";
     card.className = "card";
     ai_deck.appendChild(card);
   }
@@ -118,7 +103,15 @@ function get_player_card() {
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
     let card_value = Math.floor(Math.random() * 3 + 1);
-    card.src = `img/${current_theme}/${["rock", "paper", "scissors"][card_value - 1]}.jpg`;
+    if (card_value == 1) {
+      card.src = "img/rock.webp";
+    }
+    if (card_value == 2) {
+      card.src = "img/paper.jpeg";
+    }
+    if (card_value == 3) {
+      card.src = "img/scissors.png";
+    }
     card.value = card_value;
     card.id = "player_card_" + i;
     card.className = "card";
@@ -143,7 +136,7 @@ function get_result() {
   player_card_on_deck.innerHTML = ""; // Clear previous player card
 
   let ai_card = document.createElement("play-card");
-  ai_card.src = getImgPath("card_back.jpg");
+  ai_card.src = "img/card_back.jpg";
   ai_card.className = "card";
   ai_card_on_deck.appendChild(ai_card);
 
@@ -154,22 +147,22 @@ function get_result() {
     // Change the image midway through the flip
     setTimeout(() => {
       if (ai_card_value == 1) {
-        ai_card.src = `img/${current_theme}/rock.jpg`;
+        ai_card.src = "img/rock.webp";
       } else if (ai_card_value == 2) {
-        ai_card.src = `img/${current_theme}/paper.jpg`;
+        ai_card.src = "img/paper.jpeg";
       } else if (ai_card_value == 3) {
-        ai_card.src = `img/${current_theme}/scissors.jpg`;
+        ai_card.src = "img/scissors.png";
       }
     }, 300); // Halfway point of the flip animation
   }, 100); // Initial delay to show the back
 
   let player_card = document.createElement("play-card");
   if (player_card_value == 1) {
-    player_card.src = `img/${current_theme}/rock.jpg`;
+    player_card.src = "img/rock.webp";
   } else if (player_card_value == 2) {
-    player_card.src = `img/${current_theme}/paper.jpg`;
+    player_card.src = "img/paper.jpeg";
   } else if (player_card_value == 3) {
-    player_card.src = `img/${current_theme}/scissors.jpg`;
+    player_card.src = "img/scissors.png";
   }
   player_card_on_deck.appendChild(player_card);
   player_card.className = "card";
