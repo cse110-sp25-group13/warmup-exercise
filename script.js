@@ -12,6 +12,7 @@ const info_word = document.getElementById("info");
 const shuffle_button = document.getElementById("shuffle");
 const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
+<<<<<<< HEAD
 const CARDBACK_PATH = './img/card_back.jpg';
 
 let CARDFRONT_PATHS = [
@@ -19,6 +20,10 @@ let CARDFRONT_PATHS = [
   `img/classic/paper.jpg`,
   `img/classic/scissors.jpg`
 ];
+=======
+const info_theme = document.getElementById("theme");
+const theme_toggle = document.getElementById("theme_select");
+>>>>>>> b77dd757eae026933dd7e4bdb693b8414b95b7ef
 
 let rock,
   paper,
@@ -29,6 +34,10 @@ let player_score = 0;
 let current_theme = "classic";
 
 shuffle_button.style.display = "none";
+<<<<<<< HEAD
+=======
+info_theme.style.display = "none";
+>>>>>>> b77dd757eae026933dd7e4bdb693b8414b95b7ef
 table.style.backgroundImage = "url('img/classic/table.jpg')";
 
 class Card extends HTMLElement {
@@ -84,9 +93,16 @@ function init() {
   table.style.backgroundImage = `url('img/${current_theme}/table.jpg')`;
   info_word.style.display = "none";
   get_start_button.style.display = "none";
+  info_theme.style.display = "none";
   shuffle_button.style.display = "block";
+  current_theme = document.getElementById("theme_select").value;
+  table.style.backgroundImage = `url(${getImgPath("table.jpg")})`;
   get_ai_card();
   get_player_card();
+}
+
+function getImgPath(filename) {
+  return `img/${current_theme}/${filename}`
 }
 
 function get_ai_card() {
@@ -97,7 +113,11 @@ function get_ai_card() {
   //   remove old cards
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
+<<<<<<< HEAD
     card.src = CARDBACK_PATH;
+=======
+    card.src = getImgPath("card_back.jpg");
+>>>>>>> b77dd757eae026933dd7e4bdb693b8414b95b7ef
     card.className = "card";
     ai_deck.appendChild(card);
   }
@@ -112,7 +132,19 @@ function get_player_card() {
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
     let card_value = Math.floor(Math.random() * 3 + 1);
+<<<<<<< HEAD
     card.src = `img/${current_theme}/${["rock", "paper", "scissors"][card_value - 1]}.jpg`;
+=======
+    if (card_value == 1) {
+      card.src = getImgPath("rock.jpg");
+    }
+    if (card_value == 2) {
+      card.src = getImgPath("paper.jpg");
+    }
+    if (card_value == 3) {
+      card.src = getImgPath("scissors.jpg");
+    }
+>>>>>>> b77dd757eae026933dd7e4bdb693b8414b95b7ef
     card.value = card_value;
     card.id = "player_card_" + i;
     card.className = "card";
@@ -137,7 +169,7 @@ function get_result() {
   player_card_on_deck.innerHTML = ""; // Clear previous player card
 
   let ai_card = document.createElement("play-card");
-  ai_card.src = "img/card_back.jpg";
+  ai_card.src = getImgPath("card_back.jpg");
   ai_card.className = "card";
   ai_card_on_deck.appendChild(ai_card);
 
@@ -148,22 +180,38 @@ function get_result() {
     // Change the image midway through the flip
     setTimeout(() => {
       if (ai_card_value == 1) {
+<<<<<<< HEAD
         ai_card.src = `img/${current_theme}/rock.jpg`;
       } else if (ai_card_value == 2) {
         ai_card.src = `img/${current_theme}/paper.jpg`;
       } else if (ai_card_value == 3) {
         ai_card.src = `img/${current_theme}/scissors.jpg`;
+=======
+        ai_card.src = getImgPath("rock.jpg");
+      } else if (ai_card_value == 2) {
+        ai_card.src = getImgPath("paper.jpg");
+      } else if (ai_card_value == 3) {
+        ai_card.src = getImgPath("scissors.jpg");
+>>>>>>> b77dd757eae026933dd7e4bdb693b8414b95b7ef
       }
     }, 300); // Halfway point of the flip animation
   }, 100); // Initial delay to show the back
 
   let player_card = document.createElement("play-card");
   if (player_card_value == 1) {
+<<<<<<< HEAD
     player_card.src = `img/${current_theme}/rock.jpg`;
   } else if (player_card_value == 2) {
     player_card.src = `img/${current_theme}/paper.jpg`;
   } else if (player_card_value == 3) {
     player_card.src = `img/${current_theme}/scissors.jpg`;
+=======
+    player_card.src = getImgPath("rock.jpg");
+  } else if (player_card_value == 2) {
+    player_card.src = getImgPath("paper.jpg");
+  } else if (player_card_value == 3) {
+    player_card.src = getImgPath("scissors.jpg");
+>>>>>>> b77dd757eae026933dd7e4bdb693b8414b95b7ef
   }
   player_card_on_deck.appendChild(player_card);
   player_card.className = "card";
