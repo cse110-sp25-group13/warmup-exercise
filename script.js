@@ -13,6 +13,7 @@ const shuffle_button = document.getElementById("shuffle");
 const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
 const CARDBACK_PATH = './img/card_back.jpg';
+const PLACEHOLDER_PATH = './img/placeholder_card.png';
 
 const CARDFRONT_PATHS = [
     "./img/rock.webp",
@@ -76,8 +77,17 @@ function init() {
   info_word.style.display = "none";
   get_start_button.style.display = "none";
   shuffle_button.style.display = "block";
+  player_card_on_deck.appendChild(getPlaceholderCard())
+  ai_card_on_deck.appendChild(getPlaceholderCard())
   get_ai_card();
   get_player_card();
+}
+
+function getPlaceholderCard() {
+  const placeholder = document.createElement("play-card");
+  placeholder.src = PLACEHOLDER_PATH;
+  placeholder.className = "card placeholder-card";
+  return placeholder
 }
 
 function get_ai_card() {
@@ -107,23 +117,53 @@ function get_player_card() {
     card.value = card_value;
     card.id = "player_card_" + i;
     card.className = "card player-card";
+    card.addEventListener('click', () => get_result(card));
     player_deck.appendChild(card);
   }
+}
+
+// full disclore: completely vibecoded this
+function animateCardMove(card, targetEl){
+  return new Promise(res=>{
+    const start = card.getBoundingClientRect();
+    const end   = targetEl.getBoundingClientRect();
+
+    const ghost = card.cloneNode(true);
+    ghost.style.position='fixed';
+    ghost.style.top =  start.top  +'px';
+    ghost.style.left = start.left +'px';
+    ghost.style.width= start.width+'px';
+    ghost.style.transition='transform .4s ease-out';
+    document.body.appendChild(ghost);
+
+    card.style.visibility='hidden';                 // hide original
+    requestAnimationFrame(()=>{
+      ghost.style.transform =
+        `translate(${end.left-start.left}px,${end.top-start.top}px)`;
+    });
+
+    ghost.addEventListener('transitionend',()=>{
+      targetEl.innerHTML='';        // clear any previous card there
+      targetEl.appendChild(card);   // park real card
+      card.style.visibility='visible';
+      ghost.remove();
+      res();
+    },{once:true});
+  });
 }
 
 function delay(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
 
-async function get_result() {
+async function get_result(selected_card) {
   shuffle_button.style.display = "none";
   const ai_card_value = Math.floor(Math.random() * 3 + 1);
 
-  let selected_card =
-    player_deck.querySelectorAll("play-card")[player_selected.value - 1];
   let player_card_value = selected_card.value;
+  await animateCardMove(selected_card, player_card_on_deck);
   selected_card.remove(); // Remove the selected card from the deck
-  ai_deck.removeChild(ai_deck.lastChild); // Remove the last card from the AI deck
+  ai_deck.removeChild(ai_deck.lastElementChild); // Remove the last card from the AI deck
 
   ai_card_on_deck.innerHTML = ""; // Clear previous AI card
   player_card_on_deck.innerHTML = ""; // Clear previous player card
@@ -208,6 +248,7 @@ function createCard(type, owner) {
     else {
       card.src = src
       card.classList.add('player-card')
+      card.addEventListener('click', () => get_result(card));
     }
     card.alt = src;
     card.value = type+1;
