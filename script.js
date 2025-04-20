@@ -13,6 +13,7 @@ const shuffle_button = document.getElementById("shuffle");
 const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
 const CARDBACK_PATH = './img/card_back.jpg';
+const PLACEHOLDER_PATH = './img/placeholder_card.png';
 
 const CARDFRONT_PATHS = [
     "./img/rock.webp",
@@ -76,8 +77,17 @@ function init() {
   info_word.style.display = "none";
   get_start_button.style.display = "none";
   shuffle_button.style.display = "block";
+  player_card_on_deck.appendChild(getPlaceholderCard())
+  ai_card_on_deck.appendChild(getPlaceholderCard())
   get_ai_card();
   get_player_card();
+}
+
+function getPlaceholderCard() {
+  const placeholder = document.createElement("play-card");
+  placeholder.src = PLACEHOLDER_PATH;
+  placeholder.className = "card placeholder-card";
+  return placeholder
 }
 
 function get_ai_card() {
@@ -88,7 +98,7 @@ function get_ai_card() {
   //   remove old cards
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
-    card.src = "img/card_back.jpg";
+    card.src = CARDBACK_PATH;
     card.className = "card";
     ai_deck.appendChild(card);
   }
@@ -103,69 +113,77 @@ function get_player_card() {
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("play-card");
     let card_value = Math.floor(Math.random() * 3 + 1);
-    if (card_value == 1) {
-      card.src = "img/rock.webp";
-    }
-    if (card_value == 2) {
-      card.src = "img/paper.jpeg";
-    }
-    if (card_value == 3) {
-      card.src = "img/scissors.png";
-    }
+    card.src = CARDFRONT_PATHS[card_value - 1]
     card.value = card_value;
     card.id = "player_card_" + i;
-    card.className = "card";
+    card.className = "card player-card";
+    card.addEventListener('click', () => get_result(card));
     player_deck.appendChild(card);
   }
 }
-function get_result() {
-  if (player_deck.querySelectorAll("play-card").length == 0) {
-    gameover();
-    return;
-  }
+
+// full disclore: completely vibecoded this
+function animateCardMove(card, targetEl){
+  return new Promise(res=>{
+    const start = card.getBoundingClientRect();
+    const end   = targetEl.getBoundingClientRect();
+
+    const ghost = card.cloneNode(true);
+    ghost.style.position='fixed';
+    ghost.style.top =  start.top  +'px';
+    ghost.style.left = start.left +'px';
+    ghost.style.width= start.width+'px';
+    ghost.style.transition='transform .4s ease-out';
+    document.body.appendChild(ghost);
+
+    card.style.visibility='hidden';                 // hide original
+    requestAnimationFrame(()=>{
+      ghost.style.transform =
+        `translate(${end.left-start.left}px,${end.top-start.top}px)`;
+    });
+
+    ghost.addEventListener('transitionend',()=>{
+      targetEl.innerHTML='';        // clear any previous card there
+      targetEl.appendChild(card);   // park real card
+      card.style.visibility='visible';
+      ghost.remove();
+      res();
+    },{once:true});
+  });
+}
+
+function delay(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+
+async function get_result(selected_card) {
   shuffle_button.style.display = "none";
   const ai_card_value = Math.floor(Math.random() * 3 + 1);
 
-  let selected_card =
-    player_deck.querySelectorAll("play-card")[player_selected.value - 1];
   let player_card_value = selected_card.value;
+  await animateCardMove(selected_card, player_card_on_deck);
   selected_card.remove(); // Remove the selected card from the deck
-  ai_deck.removeChild(ai_deck.lastChild); // Remove the last card from the AI deck
+  ai_deck.removeChild(ai_deck.lastElementChild); // Remove the last card from the AI deck
 
   ai_card_on_deck.innerHTML = ""; // Clear previous AI card
   player_card_on_deck.innerHTML = ""; // Clear previous player card
 
+  let player_card = document.createElement("play-card");
+  player_card.src = CARDFRONT_PATHS[player_card_value - 1];
+  player_card_on_deck.appendChild(player_card);
+  player_card.className = "card";
+
   let ai_card = document.createElement("play-card");
-  ai_card.src = "img/card_back.jpg";
+  ai_card.src = CARDBACK_PATH
   ai_card.className = "card";
   ai_card_on_deck.appendChild(ai_card);
 
   // Delay the flip animation slightly so the back is visible first
-  setTimeout(() => {
-    ai_card.classList.add("flip");
-
-    // Change the image midway through the flip
-    setTimeout(() => {
-      if (ai_card_value == 1) {
-        ai_card.src = "img/rock.webp";
-      } else if (ai_card_value == 2) {
-        ai_card.src = "img/paper.jpeg";
-      } else if (ai_card_value == 3) {
-        ai_card.src = "img/scissors.png";
-      }
-    }, 300); // Halfway point of the flip animation
-  }, 100); // Initial delay to show the back
-
-  let player_card = document.createElement("play-card");
-  if (player_card_value == 1) {
-    player_card.src = "img/rock.webp";
-  } else if (player_card_value == 2) {
-    player_card.src = "img/paper.jpeg";
-  } else if (player_card_value == 3) {
-    player_card.src = "img/scissors.png";
-  }
-  player_card_on_deck.appendChild(player_card);
-  player_card.className = "card";
+  await delay(100);          // show back first
+  ai_card.classList.add("flip");
+  await delay(300);          // halfway through the flip
+  ai_card.src = CARDFRONT_PATHS[ai_card_value - 1];
+  await delay(300); 
 
   if (ai_card_value == player_card_value) {
     message.textContent = "It's a tie!";
@@ -185,6 +203,10 @@ function get_result() {
 
   ai_score_container.textContent = "AI Score: " + ai_score;
   player_score_container.textContent = "Player Score: " + player_score;
+
+  if (player_deck.querySelectorAll("play-card").length == 0) {
+    gameover();
+  }
 }
 
 function reset_game() {
@@ -218,13 +240,16 @@ function gameover() {
 }
 // Helper to create a card element (Rock/Paper/Scissors)
 function createCard(type, owner) {
-    const card = document.createElement('img');
+    const card = document.createElement('play-card');
     card.classList.add('card');
-    card.className = "card"
 
     const src = CARDFRONT_PATHS[type];
     if(owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
-    else card.src = src
+    else {
+      card.src = src
+      card.classList.add('player-card')
+      card.addEventListener('click', () => get_result(card));
+    }
     card.alt = src;
     card.value = type+1;
     // You can add event listeners or metadata if needed

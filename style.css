@@ -23,6 +23,14 @@ play-card {
   transform-style: preserve-3d;
 }
 
+.player-card {
+  cursor:pointer;
+}
+
+.placeholder-card {
+  background-color: transparent;
+}
+
 .card.flip {
   animation: flip-card 0.6s forwards;
 }
