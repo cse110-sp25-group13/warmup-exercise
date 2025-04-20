@@ -6,7 +6,8 @@ body {
   background-repeat: no-repeat;
 }
 
-img {
+img,
+play-card {
   max-width: 12vw;
 }
 
