@@ -9,17 +9,17 @@
 
   <body>
     <header>
-      <h1>Weclome to the guess and pick</h1>
+      <h1>Welcome to the Guess and Pick</h1>
+      <section id="theme_pick">
+        <label for="theme-select">Choose a theme:</label>
+        <select id="theme-select" onchange="reset_game()">
+          <option value="classic" selected>Classic</option>
+          <option value="exploding-kittens">Exploding Kittens</option>
+          <option value="avatar">Avatar: The Last Airbender</option>
+        </select>
+      </section>
       <h2 id = "info">Start the game by getting cards:</h2>
-        <button id = "get_start" onclick ="init()">Get Cards</button>
-        <section id="theme_pick">
-            <label for="theme-select">Choose a theme:</label>
-            <select id="theme-select" onchange="reset_game()">
-              <option value="classic" selected>Classic</option>
-              <option value="exploding-kittens">Exploding Kittens</option>
-              <option value="avatar">Avatar: The Last Airbender</option>
-            </select>
-        </section>
+      <button id = "get_start" onclick ="init()">Get Cards</button>
     </header>
     <section class = "game_deck">
         <h3>AI</h3>
@@ -51,8 +51,10 @@
         <section id = "player_deck">
         </section>
     </section>
-    <button id = "shuffle" onclick = "get_player_card()">Shuffle</button>   
-    <button id= "pull_card" onclick="pullCard()">Pull Card</button>
+    <div class="button-row">
+        <button id="shuffle" onclick="get_player_card()">Shuffle</button>   
+        <button id="pull_card" onclick="pullCard()">Pull Card</button>
+    </div>
     <button id = "reset" onclick = "reset_game()">Reset</button>
   </body>
   <script src = "script.js"></script>
