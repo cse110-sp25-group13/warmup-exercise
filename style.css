@@ -14,6 +14,16 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+#theme_pick {
+  margin-bottom: 2vh;
+}
+#theme-select {
+  background-color: #000;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
 
 /* headers */
 header {
@@ -22,8 +32,17 @@ header {
   align-items: center;
   text-align: center;
 }
-h1, h2{
-  margin: 1vh;
+h1 {
+  font-size: 2.5rem;
+  color: #00ffcc;
+  text-shadow: 2px 2px #003322;
+  margin-top: 20px;
+  margin-bottom: 1.5vh;
+  padding: 0;
+}
+h2{
+  margin-top: 0;
+  margin-bottom: 1vh;
   padding: 0;
 }
 h3 {
@@ -97,6 +116,21 @@ h4 {
   flex-direction: column;
   align-items: center;
 }
+#status_message {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  color: #ffffff;
+  text-shadow: 0 0 3px #000;
+}
+.score {
+  color: #00ffff; /* Works well on all background variants */
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.6);
+}
+#player_score {
+  color: #66ff66;
+}
 
 /* Game Table */
 #table {
@@ -116,6 +150,11 @@ h4 {
 #table span {
   font-size: 1.5rem;
   color: #efe3e3;
+}
+#table_player h4, #table_ai h4 {
+  font-size: 1.3rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px #000;
 }
 
 /* Get Cards button */
