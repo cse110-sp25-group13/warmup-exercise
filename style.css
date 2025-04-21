@@ -1,26 +1,78 @@
 body {
   color: aquamarine;
+  overflow-y: auto;         /* Allow vertical scroll only if absolutely needed */
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-image: url("img/background.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
+#theme_pick {
+  margin-bottom: 2vh;
+}
+#theme-select {
+  background-color: #000;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
 
-img,
-play-card {
-  max-width: 12vw;
+/* headers */
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+h1 {
+  font-size: 2.5rem;
+  color: #00ffcc;
+  text-shadow: 2px 2px #003322;
+  margin-top: 20px;
+  margin-bottom: 1.5vh;
+  padding: 0;
+}
+h2{
+  margin-top: 0;
+  margin-bottom: 1vh;
+  padding: 0;
+}
+h3 {
+  margin-top: 2vh;
+  margin-bottom: 0vh;
+  padding: 0;
+}
+h4 {
+  margin: 0.5vh;
 }
 
 .card {
   display: flex;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.5rem;
   margin: 1rem;
   border-radius: 10px;
   background-color: #f0f0f0;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.6s;
   transform-style: preserve-3d;
+}
+
+.player-card {
+  cursor:pointer;
+}
+
+.placeholder-card {
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .player-card {
@@ -46,23 +98,128 @@ play-card {
 
 #player_deck,
 #ai_deck {
+  margin-top: 0vh;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
+#table_player,
+#table_ai,
+.game_status {
+  flex: 1; 
+  padding: 0 2rem;
+}
+
+.game_status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#status_message {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  color: #ffffff;
+  text-shadow: 0 0 3px #000;
+}
+.score {
+  color: #00ffff; /* Works well on all background variants */
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.6);
+}
+#player_score {
+  color: #66ff66;
+}
+
+/* Game Table */
 #table {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 
-  height: 40vh;
+  min-height: 20vh;
+  max-height: 40vh;
   border: 3px solid #000000;
   border-radius: 1rem;
-  margin: 1rem;
+  margin: 1rem auto;
   padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 #table span {
   font-size: 1.5rem;
   color: #efe3e3;
 }
+#table_player h4, #table_ai h4 {
+  font-size: 1.3rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px #000;
+}
+
+/* Get Cards button */
+#get_start {
+  background-color: black;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 10px 50px;         /* Space inside the button */
+  font-size: 16px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+#get_start:hover {
+  background-color: #333;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  transform: scale(1.03);
+}
+
+/* Reset button */
+#reset {
+  margin-top: 0.5vh;
+  background-color: red;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 10px 15px;         /* Space inside the button */
+  font-size: 12px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+#reset:hover {
+  background-color: #cc0000; /* slightly darker red */
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* red glow */
+  transform: scale(1.05);
+}
+
+/* Shuffle and Pull Card buttons */
+.button-row {
+  margin-top: 2vh;
+  display: flex;
+  gap: 10px; /* Optional: adds spacing between buttons */
+  justify-content: center; /* Or "flex-start" or "space-between" */
+  margin-bottom: 1vh;
+}
+#shuffle, #pull_card {
+  background-color: black;  /* Bright blue */
+  color: white;               /* White text */
+  padding: 10px 15px;         /* Space inside the button */
+  font-size: 12px;
+  font-weight: bold;
+  border: none;               /* Removes default border */
+  border-radius: 10px;        /* Rounded corners */
+  cursor: pointer;            /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background-color 0.3s ease;
+}
+#shuffle:hover, #pull_card:hover {
+  background-color: #333;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  transform: scale(1.03);
+}
+ 
+

@@ -42,7 +42,7 @@ class Card extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
     this.img = document.createElement("img");
     this.shadow.appendChild(this.img);
-    this.img.style.width = "12vw";
+    this.img.style.width = "8vw";
   }
 
   connectedCallback() {
@@ -183,6 +183,13 @@ async function get_result(selected_card) {
   player_card_on_deck.appendChild(player_card);
   player_card.className = "card";
 
+  /*let ai_card = document.createElement("play-card");
+  ai_card.src = CARDBACK_PATH
+  let player_card = document.createElement("play-card");
+  player_card.src = CARDFRONT_PATHS[player_card_value - 1];
+  player_card_on_deck.appendChild(player_card);
+  player_card.className = "card";*/
+
   let ai_card = document.createElement("play-card");
   ai_card.src = CARDBACK_PATH
   ai_card.className = "card";
@@ -248,6 +255,44 @@ function gameover() {
   } else {
     alert("It's a tie!");
   }
+}
+// Helper to create a card element (Rock/Paper/Scissors)
+function createCard(type, owner) {
+    const card = document.createElement('play-card');
+    card.classList.add('card');
+
+    const src = CARDFRONT_PATHS[type];
+    if(owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
+    else {
+      card.src = src
+      card.classList.add('player-card')
+      card.addEventListener('click', () => get_result(card));
+    }
+    card.alt = src;
+    card.value = type+1;
+    // You can add event listeners or metadata if needed
+    return card;
+}
+
+function pullCard() {
+
+    const maxHandSize = 4;
+    if (player_deck.children.length >= maxHandSize) {
+        player_deck.removeChild(player_deck.firstElementChild);
+    }
+    if (ai_deck.children.length >= maxHandSize) {
+        ai_deck.removeChild(ai_deck.firstElementChild);
+    }
+    const playerCardType = Math.floor(Math.random() * 3);
+    const aiCardType = Math.floor(Math.random() * 3);
+
+    const playerCard = createCard(playerCardType, 'player');
+    const aiCard = createCard(aiCardType, 'ai');
+
+    playerCard.id = "player_card_"+ player_deck.children.length;
+    player_deck.appendChild(playerCard);
+    ai_deck.appendChild(aiCard);
+    
 }
 // Helper to create a card element (Rock/Paper/Scissors)
 function createCard(type, owner) {
