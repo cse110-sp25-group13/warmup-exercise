@@ -31,7 +31,7 @@ let player_score = 0;
 let theme = theme_chooser.value;
 
 shuffle_button.style.display = "none";
-table.style.backgroundImage = "url('img/table.jpg')";
+table.style.backgroundImage = "url('img/classic/table.jpg')";
 
 class Card extends HTMLElement {
   static get observedAttributes() {
