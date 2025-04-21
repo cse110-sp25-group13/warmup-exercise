@@ -9,12 +9,12 @@
 
   <body>
     <header>
-      <h1>Welcome to the Guess and Pick</h1>
+      <h1>Weclome to the guess and pick</h1>
       <h2 id = "info">Start the game by getting cards:</h2>
         <button id = "get_start" onclick ="init()">Get Cards</button>
     </header>
     <section class = "game_deck">
-        <h3>AI's Hand</h3>
+        <h3>AI</h3>
         <section id = "ai_deck">
         </section>
     <sectio class = "game_table">
@@ -39,22 +39,14 @@
         </section>
     </section>
     <section>
-        <h3>Player's Hand</h3>
+        <h3>Player</h3>
         <section id = "player_deck">
         </section>
     </section>
-    <button id = "shuffle" onclick = "get_player_card()">Shuffle</button>   
-    <section class = "choose">
-        <h3>Choose a Card</h3>
-        <select id = "player_choice">
-            <option value="1" id = "pc_1">Card 1</option>
-            <option value="2" id = "pc_2">Card 2</option>
-            <option value="3" id = "pc_3">Card 3</option>
-            <option value="4" id = "pc_4">Card 4</option>
-        </select>
-        <button id= "play" onclick = "get_result()">Play</button>
-    </section>
-    
+    <div class="button-row">
+        <button id="shuffle" onclick="get_player_card()">Shuffle</button>   
+        <button id="pull_card" onclick="pullCard()">Pull Card</button>
+    </div>
     <button id = "reset" onclick = "reset_game()">Reset</button>
   </body>
   <script src = "script.js"></script>
