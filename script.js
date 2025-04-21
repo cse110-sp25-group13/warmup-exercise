@@ -12,13 +12,14 @@ const info_word = document.getElementById("info");
 const shuffle_button = document.getElementById("shuffle");
 const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
+const theme_chooser = document.getElementById("theme-select");
 const CARDBACK_PATH = './img/card_back.jpg';
 const PLACEHOLDER_PATH = './img/placeholder_card.png';
 
 const CARDFRONT_PATHS = [
-    "./img/rock.webp",
-    "./img/paper.jpeg",
-    "./img/scissors.png",
+    "./img/classic/rock.jpg",
+    "./img/classic/paper.jpg",
+    "./img/classic/scissors.jpg",
 ];
 
 let rock,
@@ -27,6 +28,7 @@ let rock,
 
 let ai_score = 0;
 let player_score = 0;
+let theme = theme_chooser.value;
 
 shuffle_button.style.display = "none";
 table.style.backgroundImage = "url('img/table.jpg')";
@@ -81,6 +83,14 @@ function init() {
   ai_card_on_deck.appendChild(getPlaceholderCard())
   get_ai_card();
   get_player_card();
+}
+
+function updateThemeImages() {
+  theme = theme_chooser.value;
+  CARDFRONT_PATHS[0] = `./img/${theme}/rock.jpg`;
+  CARDFRONT_PATHS[1] = `./img/${theme}/paper.jpg`;
+  CARDFRONT_PATHS[2] = `./img/${theme}/scissors.jpg`;
+  table.style.backgroundImage = `url('/img/${theme}/table.jpg')`;
 }
 
 function getPlaceholderCard() {
@@ -173,6 +183,13 @@ async function get_result(selected_card) {
   player_card_on_deck.appendChild(player_card);
   player_card.className = "card";
 
+  /*let ai_card = document.createElement("play-card");
+  ai_card.src = CARDBACK_PATH
+  let player_card = document.createElement("play-card");
+  player_card.src = CARDFRONT_PATHS[player_card_value - 1];
+  player_card_on_deck.appendChild(player_card);
+  player_card.className = "card";*/
+
   let ai_card = document.createElement("play-card");
   ai_card.src = CARDBACK_PATH
   ai_card.className = "card";
@@ -210,6 +227,7 @@ async function get_result(selected_card) {
 }
 
 function reset_game() {
+  updateThemeImages();
   ai_card_on_deck.innerHTML = ""; // Clear previous AI card
   player_card_on_deck.innerHTML = ""; // Clear previous player card
   message.textContent = "Choose a card!";
@@ -237,6 +255,44 @@ function gameover() {
   } else {
     alert("It's a tie!");
   }
+}
+// Helper to create a card element (Rock/Paper/Scissors)
+function createCard(type, owner) {
+    const card = document.createElement('play-card');
+    card.classList.add('card');
+
+    const src = CARDFRONT_PATHS[type];
+    if(owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
+    else {
+      card.src = src
+      card.classList.add('player-card')
+      card.addEventListener('click', () => get_result(card));
+    }
+    card.alt = src;
+    card.value = type+1;
+    // You can add event listeners or metadata if needed
+    return card;
+}
+
+function pullCard() {
+
+    const maxHandSize = 4;
+    if (player_deck.children.length >= maxHandSize) {
+        player_deck.removeChild(player_deck.firstElementChild);
+    }
+    if (ai_deck.children.length >= maxHandSize) {
+        ai_deck.removeChild(ai_deck.firstElementChild);
+    }
+    const playerCardType = Math.floor(Math.random() * 3);
+    const aiCardType = Math.floor(Math.random() * 3);
+
+    const playerCard = createCard(playerCardType, 'player');
+    const aiCard = createCard(aiCardType, 'ai');
+
+    playerCard.id = "player_card_"+ player_deck.children.length;
+    player_deck.appendChild(playerCard);
+    ai_deck.appendChild(aiCard);
+    
 }
 // Helper to create a card element (Rock/Paper/Scissors)
 function createCard(type, owner) {

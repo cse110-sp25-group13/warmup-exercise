@@ -53,6 +53,15 @@ h4 {
 
 .placeholder-card {
   background-color: transparent;
+  box-shadow: none;
+}
+
+.player-card {
+  cursor:pointer;
+}
+
+.placeholder-card {
+  background-color: transparent;
 }
 
 .card.flip {
