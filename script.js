@@ -224,18 +224,18 @@ async function get_result(selected_card) {
 
   if (ai_card_value == player_card_value) {
     message.textContent = "It's a tie!";
-  } else if (ai_card_value > player_card_value) {
-    message.textContent = "AI wins!";
-    ai_score++;
   } else if (ai_card_value == 1 && player_card_value == 3) {
     message.textContent = "AI wins!";
     ai_score++;
-  } else if (player_card_value > ai_card_value) {
-    message.textContent = "player wins!";
-    player_score++;
   } else if (player_card_value == 1 && ai_card_value == 3) {
     message.textContent = "player wins!";
     player_score++;
+  } else if (player_card_value > ai_card_value) {
+    message.textContent = "player wins!";
+    player_score++;
+  } else if (ai_card_value > player_card_value) {
+    message.textContent = "AI wins!";
+    ai_score++;
   }
 
   ai_score_container.textContent = "AI Score: " + ai_score;
@@ -315,47 +315,44 @@ function pullCard() {
 
   const playerCard = createCard(playerCardType, "player");
   const aiCard = createCard(aiCardType, "ai");
-  
-    playerCard.id = "player_card_"+ player_deck.children.length;
-    player_deck.appendChild(playerCard);
-    ai_deck.appendChild(aiCard);
-    
+
+  playerCard.id = "player_card_" + player_deck.children.length;
+  player_deck.appendChild(playerCard);
+  ai_deck.appendChild(aiCard);
 }
 // Helper to create a card element (Rock/Paper/Scissors)
 function createCard(type, owner) {
-    const card = document.createElement('play-card');
-    card.classList.add('card');
+  const card = document.createElement("play-card");
+  card.classList.add("card");
 
-    const src = CARDFRONT_PATHS[type];
-    if(owner == 'ai') card.src = CARDBACK_PATH; // Make sure these images exist
-    else {
-      card.src = src
-      card.classList.add('player-card')
-      card.addEventListener('click', () => get_result(card));
-    }
-    card.alt = src;
-    card.value = type+1;
-    // You can add event listeners or metadata if needed
-    return card;
+  const src = CARDFRONT_PATHS[type];
+  if (owner == "ai") card.src = CARDBACK_PATH; // Make sure these images exist
+  else {
+    card.src = src;
+    card.classList.add("player-card");
+    card.addEventListener("click", () => get_result(card));
+  }
+  card.alt = src;
+  card.value = type + 1;
+  // You can add event listeners or metadata if needed
+  return card;
 }
 
 function pullCard() {
+  const maxHandSize = 4;
+  if (player_deck.children.length >= maxHandSize) {
+    player_deck.removeChild(player_deck.firstElementChild);
+  }
+  if (ai_deck.children.length >= maxHandSize) {
+    ai_deck.removeChild(ai_deck.firstElementChild);
+  }
+  const playerCardType = Math.floor(Math.random() * 3);
+  const aiCardType = Math.floor(Math.random() * 3);
 
-    const maxHandSize = 4;
-    if (player_deck.children.length >= maxHandSize) {
-        player_deck.removeChild(player_deck.firstElementChild);
-    }
-    if (ai_deck.children.length >= maxHandSize) {
-        ai_deck.removeChild(ai_deck.firstElementChild);
-    }
-    const playerCardType = Math.floor(Math.random() * 3);
-    const aiCardType = Math.floor(Math.random() * 3);
+  const playerCard = createCard(playerCardType, "player");
+  const aiCard = createCard(aiCardType, "ai");
 
-    const playerCard = createCard(playerCardType, 'player');
-    const aiCard = createCard(aiCardType, 'ai');
-
-    playerCard.id = "player_card_"+ player_deck.children.length;
-    player_deck.appendChild(playerCard);
-    ai_deck.appendChild(aiCard);
-    
+  playerCard.id = "player_card_" + player_deck.children.length;
+  player_deck.appendChild(playerCard);
+  ai_deck.appendChild(aiCard);
 }
