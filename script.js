@@ -12,13 +12,14 @@ const info_word = document.getElementById("info");
 const shuffle_button = document.getElementById("shuffle");
 const player_card_on_deck = document.getElementById("player_card");
 const ai_card_on_deck = document.getElementById("ai_card");
+const theme_chooser = document.getElementById("theme-select");
 const CARDBACK_PATH = './img/card_back.jpg';
 const PLACEHOLDER_PATH = './img/placeholder_card.png';
 
 const CARDFRONT_PATHS = [
-    "./img/rock.webp",
-    "./img/paper.jpeg",
-    "./img/scissors.png",
+    "./img/classic/rock.jpg",
+    "./img/classic/paper.jpg",
+    "./img/classic/scissors.jpg",
 ];
 
 let rock,
@@ -27,9 +28,10 @@ let rock,
 
 let ai_score = 0;
 let player_score = 0;
+let theme = theme_chooser.value;
 
 shuffle_button.style.display = "none";
-table.style.backgroundImage = "url('img/table.jpg')";
+table.style.backgroundImage = "url('img/classic/table.jpg')";
 
 class Card extends HTMLElement {
   static get observedAttributes() {
@@ -81,6 +83,14 @@ function init() {
   ai_card_on_deck.appendChild(getPlaceholderCard())
   get_ai_card();
   get_player_card();
+}
+
+function updateThemeImages() {
+  theme = theme_chooser.value;
+  CARDFRONT_PATHS[0] = `./img/${theme}/rock.jpg`;
+  CARDFRONT_PATHS[1] = `./img/${theme}/paper.jpg`;
+  CARDFRONT_PATHS[2] = `./img/${theme}/scissors.jpg`;
+  table.style.backgroundImage = `url('/img/${theme}/table.jpg')`;
 }
 
 function getPlaceholderCard() {
@@ -210,6 +220,7 @@ async function get_result(selected_card) {
 }
 
 function reset_game() {
+  updateThemeImages();
   ai_card_on_deck.innerHTML = ""; // Clear previous AI card
   player_card_on_deck.innerHTML = ""; // Clear previous player card
   message.textContent = "Choose a card!";
